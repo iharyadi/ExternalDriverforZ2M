@@ -25,11 +25,9 @@ const myoptions = {
 
 function handlePresence(model, msg, publish, options, meta) {
         const useOptionsTimeout_battery = options && options.hasOwnProperty('presence_timeout_battery');
-
         const timeout_battery = useOptionsTimeout_battery ? options.presence_timeout_battery : 420; // 100 seconds by default
 
         const useOptionsTimeout_dc = options && options.hasOwnProperty('presence_timeout_dc');
-
         const timeout_dc = useOptionsTimeout_dc ? options.presence_timeout_dc : 60;
 
         const mode = meta.state? meta.state['power_state'] : false;
@@ -37,7 +35,6 @@ function handlePresence(model, msg, publish, options, meta) {
         const timeout =  mode ?  timeout_dc : timeout_battery;
             // Stop existing timer because motion is detected and set a new one.
         clearTimeout(globalStore.getValue(msg.endpoint, 'timer'));
-
         const timer = setTimeout(() => publish({presence: false}), timeout * 1000);
         globalStore.putValue(msg.endpoint, 'timer', timer);
 
@@ -87,7 +84,7 @@ const device = {
         fromZigbee: [myconverters.STS_PRS_251_power_presence, myconverters.STS_PRS_251_binary_input, fz.temperature],
         exposes: [e.battery(), e.presence(), exposes.binary('power_state',exposes.access.STATE,true,false), e.occupancy(), e.vibration(), e.temperature()],
         toZigbee: [],
-        meta: {battery: {voltageToPercentage: '3V_2500'},},
+        meta: {battery: {voltageToPercentage: '3V_1500_2800'},},
         configure: async (device, coordinatorEndpoint, logger) => {
             const endpoint = device.getEndpoint(1);
             await reporting.bind(endpoint, coordinatorEndpoint, ['msTemperatureMeasurement','genPowerCfg', 'genBinaryInput']);
