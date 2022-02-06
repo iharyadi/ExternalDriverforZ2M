@@ -87,6 +87,11 @@ const device = {
         meta: {battery: {voltageToPercentage: '3V_1500_2800'},},
         configure: async (device, coordinatorEndpoint, logger) => {
             const endpoint = device.getEndpoint(1);
+            for (const cluster of ['msTemperatureMeasurement','genPowerCfg', 'genBinaryInput']){
+               await endpoint.bind(cluster, coordinatorEndpoint);
+               await utils.sleep(2000);
+            }
+
             await reporting.bind(endpoint, coordinatorEndpoint, ['msTemperatureMeasurement','genPowerCfg', 'genBinaryInput']);
 	    const p = reporting.payload('batteryVoltage', 0, 10, 1);
 	    await endpoint.configureReporting('genPowerCfg', p);
