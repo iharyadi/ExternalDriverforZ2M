@@ -88,16 +88,20 @@ const device = {
         configure: async (device, coordinatorEndpoint, logger) => {
             const endpoint = device.getEndpoint(1);
             for (const cluster of ['msTemperatureMeasurement','genPowerCfg', 'genBinaryInput']){
-               await endpoint.bind(cluster, coordinatorEndpoint);
                await utils.sleep(2000);
+               await endpoint.bind(cluster, coordinatorEndpoint);
             }
 
-            await reporting.bind(endpoint, coordinatorEndpoint, ['msTemperatureMeasurement','genPowerCfg', 'genBinaryInput']);
+            await utils.sleep(1000);
 	    const p = reporting.payload('batteryVoltage', 0, 10, 1);
-	    await endpoint.configureReporting('genPowerCfg', p);
-	    const p2 = reporting.payload('presentValue', 0, 300, 1);
+            await endpoint.configureReporting('genPowerCfg', p);	    
+           
+            await utils.sleep(1000);
+            const p2 = reporting.payload('presentValue', 0, 300, 1);
             await endpoint.configureReporting('genBinaryInput', p2);
-            await reporting.temperature(endpoint);
+            
+            await utils.sleep(1000);
+	    await reporting.temperature(endpoint);
 	    await endpoint.read('genBinaryInput', ['presentValue']);
         },
 };
