@@ -77,9 +77,9 @@ const myconverters = {
 
 
 const device = {
-	zigbeeModel: ['tagv4'],
-        model: 'STS-PRS-251',
-        vendor: 'SmartThings',
+	zigbeeModel: ['tagv1'],
+        model: 'KMPCIL-tag-001',
+        vendor: 'KMPCIL',
         description: 'Arrival sensor',
         fromZigbee: [myconverters.STS_PRS_251_power_presence, myconverters.STS_PRS_251_binary_input, fz.temperature],
         exposes: [e.battery(), e.presence(), exposes.binary('power_state',exposes.access.STATE,true,false), e.occupancy(), e.vibration(), e.temperature()],
